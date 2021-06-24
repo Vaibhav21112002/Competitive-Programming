@@ -49,7 +49,6 @@ int countDig(int a)
 
     return ans;
 }
-
 int gcd(int a, int b)
 {
     if (!a)

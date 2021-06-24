@@ -33,6 +33,8 @@ using namespace std;
 #define mod 1000000007
 #define smod 100006
 vi adj[smod];
+vvi edges;
+vector<vector<pii>> graph;
 vector<bool> vis(smod,0);
 vi dfsvector;
 int artree[smod]; int tree[4*smod];
@@ -54,6 +56,51 @@ void init_code(){
     #endif
 }
 
+
+
+void build(int node, int st, int end){
+  if(st==end){
+    tree[node] = artree[st];
+    return;
+  }
+
+  int mid = (st+end)/2;
+  build(2*node, st,mid);
+  build(2*node+1,mid+1,end);
+
+  tree[node] = tree[2*node] + tree[2*node+1];
+}
+// <----------DSU IMPLEMENTATION----------------->
+vector<int> parent(smod);
+vector<int> sz(smod);
+
+
+void make_set(int n){
+  parent[n]= n;
+  sz[n] = 1;
+}
+
+
+int find_set(int a){
+  if(a == parent[a]){
+    return a;
+  }
+
+  return parent[a] = find_set(parent[a]);
+}
+
+void union_sets(int a,int b){
+  a = find_set(a);
+  b = find_set(b);
+  if(a!=b){
+    if(sz[a]<sz[b]) swap(a,b);
+    parent[b] = a;
+    sz[a] += sz[b];
+  }
+}
+// <----------DSU IMPLEMENTATION ENDS----------------->
+
+//<---------GRAPH ALOGORITHMS------------>
 void bfs(vi &bfsvector, int start){
   for(int i = 0; i < smod; i++){
     vis[i] = false;
@@ -87,49 +134,62 @@ void dfs(vi &dfsvector, int start){
 
 }
 
-void build(int node, int st, int end){
-  if(st==end){
-    tree[node] = artree[st];
-    return;
+
+void kruskals(int &cost){
+  for(int i = 0; i<smod; i++){
+    make_set(i);
   }
-
-  int mid = (st+end)/2;
-  build(2*node, st,mid);
-  build(2*node+1,mid+1,end);
-
-  tree[node] = tree[2*node] + tree[2*node+1];
-}
-
-// <----------DSU IMPLEMENTATION----------------->
-vector<int> parent(smod);
-vector<int> sz(smod);
-
-
-void make_set(int n){
-  parent[n]= n;
-  sz[n] = 1;
-}
-
-
-int find_set(int a){
-  if(parent[a] = a){
-    return a;
-  }
-
-  return parent[a] = find_set(parent[a]);
-}
-
-void union_sets(int a,int b){
-  a = find_set(a);
-  b = find_set(b);
-  if(a!=b){
-    if(sz[a]<sz[b]) swap(a,b);
-    parent[b] = a;
-    sz[a] += sz[b];
+  sort(edges.begin(),edges.end(),[&](vector<int> a, vector<int> b){
+    return a[2]<=b[2];
+  });
+  for(auto i:edges){
+    int u = i[0]; int v = i[1]; int w = i[2];
+    int x = find_set(u); int y = find_set(v);
+    if(x==y){
+      continue;
+    }else{ 
+      cout << u << " " << v << endl;
+      cost += w;
+      union_sets(u,v);
+    }
   }
 }
-// <----------DSU IMPLEMENTATION ENDS----------------->
 
+vi dist(smod);
+const int INF = 1e9;
+void primsMST(int source,int &cost){
+  for(int i =0; i<smod; i++ ){
+    dist[i] = INF;
+  }
+
+  dist[source] = 0;
+  set<vector<int>> s;
+  s.insert({0,source});
+  while(!s.empty()){
+    auto x = *s.begin(); // x = vector
+    s.erase(x);
+    vis[x[1]] = true;
+    int u = x[1];
+    int v = parent[x[1]];
+    int w = x[0];
+    cout << u << " " << v << " " << w << endl;
+    cost += w;
+    for(auto it: prismGraph[x[1]]){
+      if(vis[it[0]]){
+        continue;
+      }
+      if(dist[it[0]] >it[1]){
+        s.erase({dist[it[0]],it[0]});
+        dist[it[0]] = it[1];
+        s.insert({dist[it[0]],it[0]});
+        parent[it[0]] = x[1];
+      }
+    }
+  }
+}
+
+
+// <--------- GRAPH ALOGORITHM ENDS------------------->
 void solve()
 {
     

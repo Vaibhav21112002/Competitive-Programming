@@ -33,9 +33,9 @@ using namespace std;
 #define mod 1000000007
 #define smod 100006
 vi adj[smod];
+vvi prismGraph[smod];
 vvi edges;
-vector<vector<pii>> graph;
-vector<bool> vis(smod,0);
+vector<int> vis(smod,0);
 vi dfsvector;
 int artree[smod]; int tree[4*smod];
 
@@ -155,16 +155,50 @@ void kruskals(int &cost){
     }
   }
 }
+
+vi dist(smod);
+const int INF = 1e9;
+void primsMST(int source,int &cost){
+  for(int i =0; i<smod; i++ ){
+    dist[i] = INF;
+  }
+
+  dist[source] = 0;
+  set<vector<int>> s;
+  s.insert({0,source});
+  while(!s.empty()){
+    auto x = *s.begin(); // x = vector
+    s.erase(x);
+    vis[x[1]] = true;
+    int u = x[1];
+    int v = parent[x[1]];
+    int w = x[0];
+    cout << u << " " << v << " " << w << endl;
+    cost += w;
+    for(auto it: prismGraph[x[1]]){
+      if(vis[it[0]]){
+        continue;
+      }
+      if(dist[it[0]]>it[1]){
+        s.erase({dist[it[0]],it[0]});
+        dist[it[0]] = it[1];
+        s.insert({dist[it[0]],it[0]});
+        parent[it[0]] = x[1];
+      }
+    }
+  }
+}
 // <--------- GRAPH ALOGORITHM ENDS------------------->
 void solve()
 {
     int n,m; cin >> n >> m;
     for(int i = 0; i<m; i++){
       int u,v,w; cin >> u >> v >> w;
-      edges.pb({u,v,w});
+      prismGraph[u].pb({v,w});
+      prismGraph[v].pb({u,w});
     }
     int cost = 0;
-    kruskals(cost);
+    primsMST(0,cost);
     cout << cost << endl;
 }
 int main()
