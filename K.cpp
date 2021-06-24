@@ -377,7 +377,7 @@ void solve()
   root->right->left = new Node(7);
   root->right->left->right = new Node(11);
   root->right->right = new Node(9);
-  root->right->right->right = new Node(12);
+  // root->right->right->right = new Node(12);
   preorder(root);br
   inorder(root);br
   postorder(root);br

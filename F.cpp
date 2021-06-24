@@ -100,13 +100,39 @@ void build(int node, int st, int end){
   tree[node] = tree[2*node] + tree[2*node+1];
 }
 
+// <----------DSU IMPLEMENTATION----------------->
+vector<int> parent(smod);
+vector<int> sz(smod);
+
+
+void make_set(int n){
+  parent[n]= n;
+  sz[n] = 1;
+}
+
+
+int find_set(int a){
+  if(parent[a] = a){
+    return a;
+  }
+
+  return parent[a] = find_set(parent[a]);
+}
+
+void union_sets(int a,int b){
+  a = find_set(a);
+  b = find_set(b);
+  if(a!=b){
+    if(sz[a]<sz[b]) swap(a,b);
+    parent[b] = a;
+    sz[a] += sz[b];
+  }
+}
+// <----------DSU IMPLEMENTATION ENDS----------------->
+
 void solve()
 {
-    int n; cin >> n;
-    int a[n]; read(a);
-    for(int i = n-1; i>=0; i--){
-      cout << a[i] << endl;
-    }
+    
 }
 int main()
 {

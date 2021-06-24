@@ -50,27 +50,24 @@ int countDig(int a)
     return ans;
 }
 
+int gcd(int a, int b)
+{
+    if (!a)
+        return b;
+    return gcd(b % a, a);
+}
+
 void solve()
 {
-    int a = 7, b = 5;
-    switch (a = a % b)
-    {
-    case 1:
-        a = a - b;
-    case 2:
-        a = a + b;
-    case 3:
-        a = a * b;
-    case 4:
-        a = a / b;
-    default:
-        a = a;
-    }
+    int a, b;
+    readi(a);
+    readi(b);
 
-    printf("%d", a);
+    printf("%d", gcd(a, b));
 }
 
 int main()
+
 {
     solve();
     return 0;
