@@ -56,8 +56,6 @@ void init_code(){
     #endif
 }
 
-
-
 void build(int node, int st, int end){
   if(st==end){
     tree[node] = artree[st];
@@ -74,12 +72,10 @@ void build(int node, int st, int end){
 vector<int> parent(smod);
 vector<int> sz(smod);
 
-
 void make_set(int n){
   parent[n]= n;
   sz[n] = 1;
 }
-
 
 int find_set(int a){
   if(a == parent[a]){
@@ -99,7 +95,6 @@ void union_sets(int a,int b){
   }
 }
 // <----------DSU IMPLEMENTATION ENDS----------------->
-
 //<---------GRAPH ALOGORITHMS------------>
 void bfs(vi &bfsvector, int start){
   for(int i = 0; i < smod; i++){
@@ -155,13 +150,9 @@ void kruskals(int &cost){
   }
 }
 
-vi dist(smod);
 const int INF = 1e9;
+vi dist(smod,INF);
 void primsMST(int source,int &cost){
-  for(int i =0; i<smod; i++ ){
-    dist[i] = INF;
-  }
-
   dist[source] = 0;
   set<vector<int>> s;
   s.insert({0,source});
@@ -188,11 +179,7 @@ void primsMST(int source,int &cost){
   }
 }
 
-void dijkstra(int source){
-  for(int i = 0; i<smod; i++){
-    dist[i] = INF;
-  }
-
+void dijkstra(int source,int n){
   dist[source] = 0;
   set<vector<int>> s;
   s.insert({0,source});
@@ -200,14 +187,14 @@ void dijkstra(int source){
     auto x = *s.begin();
     s.erase(x);
     for(auto it: prismGraph[x[1]]){
-      if(dist[it[0]]> dist[x[1]] + it[1]){
+      if(dist[it[0]] > dist[x[1]] + it[1]){
         s.erase({dist[it[0]],it[0]});
         dist[it[0]] = dist[x[1]] + it[1];
         s.insert({dist[it[0]],it[0]});
       }
     }
   }
-  for(int i = 1; i<5; i++){
+  for(int i = 1; i<=n; i++){
     if(dist[i]<INF){
       cout << dist[i] << " ";
     }else{
@@ -216,16 +203,44 @@ void dijkstra(int source){
   }
 }
 
+void bellmanFord(int n, int source){
+  dist[source] = 0;
+  for(int i = 0; i<n-1; i++){
+    for(auto e: edges){
+      int u= e[0];
+      int v= e[1];
+      int w= e[2];
+      dist[v] = min(dist[v],w + dist[u]);
+    }
+  }
+
+  for(int i = 0; i<n; i++){
+    cout << dist[i] << " ";
+  }
+}
 // <--------- GRAPH ALOGORITHM ENDS------------------->
+vi v(1000001,-1);
+int combination(int n){
+  if(n<=0){
+    return 0;
+  }
+  if(n==1){
+    return 1;
+  }
+
+  if(v[n]!=-1){
+    return v[n];
+  }
+
+  v[n] = 1+ combination(n-1) + combination(n-2) + combination(n-3) + combination(n-4) + combination(n-5) + combination(n-6);
+  return v[n]; 
+
+}
 void solve()
 {
-    int n,m; cin >> n >> m;
-    for(int i= 0; i<m; i++){
-      int u,v,w; cin >> u >> v >> w;
-      prismGraph[u].pb({v,w});
-      prismGraph[v].pb({u,w});
-    }
-    dijkstra(1);
+    int n;
+    cin >> n;
+    cout << combination(n) << endl;
 }
 int main()
 {
@@ -235,4 +250,3 @@ int main()
   solve();
   return 0;
 }
-

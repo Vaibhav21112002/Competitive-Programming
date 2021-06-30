@@ -33,8 +33,8 @@ using namespace std;
 #define mod 1000000007
 #define smod 100006
 vi adj[smod];
+vvi prismGraph[smod];
 vvi edges;
-vector<vector<pii>> graph;
 vector<bool> vis(smod,0);
 vi dfsvector;
 int artree[smod]; int tree[4*smod];
@@ -56,8 +56,6 @@ void init_code(){
     #endif
 }
 
-
-
 void build(int node, int st, int end){
   if(st==end){
     tree[node] = artree[st];
@@ -74,12 +72,10 @@ void build(int node, int st, int end){
 vector<int> parent(smod);
 vector<int> sz(smod);
 
-
 void make_set(int n){
   parent[n]= n;
   sz[n] = 1;
 }
-
 
 int find_set(int a){
   if(a == parent[a]){
@@ -99,7 +95,6 @@ void union_sets(int a,int b){
   }
 }
 // <----------DSU IMPLEMENTATION ENDS----------------->
-
 //<---------GRAPH ALOGORITHMS------------>
 void bfs(vi &bfsvector, int start){
   for(int i = 0; i < smod; i++){
@@ -125,6 +120,7 @@ void bfs(vi &bfsvector, int start){
 
 void dfs(vi &dfsvector, int start){
   vis[start] = true;
+  cout << start << " ";
   dfsvector.pb(start);
   for(auto i: adj[start]){
     if(!vis[i]){
@@ -155,13 +151,9 @@ void kruskals(int &cost){
   }
 }
 
-vi dist(smod);
 const int INF = 1e9;
+vi dist(smod,INF);
 void primsMST(int source,int &cost){
-  for(int i =0; i<smod; i++ ){
-    dist[i] = INF;
-  }
-
   dist[source] = 0;
   set<vector<int>> s;
   s.insert({0,source});
@@ -188,11 +180,69 @@ void primsMST(int source,int &cost){
   }
 }
 
+void dijkstra(int source,int n){
+  dist[source] = 0;
+  set<vector<int>> s;
+  s.insert({0,source});
+  while(!s.empty()){
+    auto x = *s.begin();
+    s.erase(x);
+    for(auto it: prismGraph[x[1]]){
+      if(dist[it[0]] > dist[x[1]] + it[1]){
+        s.erase({dist[it[0]],it[0]});
+        dist[it[0]] = dist[x[1]] + it[1];
+        s.insert({dist[it[0]],it[0]});
+      }
+    }
+  }
+  for(int i = 1; i<n; i++){
+    if(dist[i]<INF){
+      cout << dist[i] << " ";
+    }else{
+      cout<<-1 << " ";
+    }
+  }
+}
 
+void bellmanFord(int n, int source){
+  dist[source] = 0;
+  for(int i = 0; i<n-1; i++){
+    for(auto e: edges){
+      int u= e[0];
+      int v= e[1];
+      int w= e[2];
+      dist[v] = min(dist[v],w + dist[u]);
+    }
+  }
+
+  for(int i = 1; i<=n; i++){
+    cout << dist[i] << " ";
+  }
+}
+
+int dp[smod];
+
+int fib(int n){
+  if(n==0){
+    return 0;
+  }
+  if(n==1){
+    return 1;
+  }
+ 
+  if(dp[n]!=-1){
+    return dp[n];
+  }
+
+  dp[n] = fib(n-1) + fib(n-2);
+  return dp[n];
+}
 // <--------- GRAPH ALOGORITHM ENDS------------------->
 void solve()
 {
-    
+  int n; cin >> n;
+  memset(dp,-1,sizeof(dp));
+  cout << fib(n) << endl;
 }
 int main()
 {
