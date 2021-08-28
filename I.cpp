@@ -32,12 +32,11 @@ using namespace std;
 #define br cout<<"\n";
 #define mod 1000000007
 #define smod 100006
+#define pie 3.1415926536
 vi adj[smod];
 vvi prismGraph[smod];
 vvi edges;
 vector<bool> vis(smod,0);
-vi dfsvector;
-int artree[smod]; int tree[4*smod];
 
 bool isLetter(char c) { return (c >= 'A' and c <= 'Z') or (c >= 'a' and c <= 'Z');}
 bool isUpperCase(char c) {return c >= 'A' and c <= 'Z';}
@@ -50,197 +49,35 @@ bool isPowerOfTwo(ll n) {return!(n&&(n&(n-1)));}
 int setBits(ll n){ll ans = 0; while(n>0){n = (n&(n-1)); ans++; } return ans; }
 
 void init_code(){
-    #ifndef ONLINE_JUDGE
-    freopen("input.txt","r", stdin);
-    freopen("output.txt","w", stdout);
-    #endif
+  #ifndef ONLINE_JUDGE
+  freopen("input.txt","r", stdin);
+  freopen("output.txt","w", stdout);
+  #endif
 }
 
-void build(int node, int st, int end){
-  if(st==end){
-    tree[node] = artree[st];
-    return;
-  }
+class item{
+  int cost;
+  int number;
+  public:
+    void getData(int a, int b);
+    void putData();
+};
 
-  int mid = (st+end)/2;
-  build(2*node, st,mid);
-  build(2*node+1,mid+1,end);
-
-  tree[node] = tree[2*node] + tree[2*node+1];
-}
-// <----------DSU IMPLEMENTATION----------------->
-vector<int> parent(smod);
-vector<int> sz(smod);
-
-void make_set(int n){
-  parent[n]= n;
-  sz[n] = 1;
+void item :: getData(int a, int b){
+  cost = a;
+  number = b;
 }
 
-int find_set(int a){
-  if(a == parent[a]){
-    return a;
-  }
-
-  return parent[a] = find_set(parent[a]);
+void item :: putData(){
+  cout << "Number: " << number << endl;
+  cout << "Cost: " << cost << endl;
 }
 
-void union_sets(int a,int b){
-  a = find_set(a);
-  b = find_set(b);
-  if(a!=b){
-    if(sz[a]<sz[b]) swap(a,b);
-    parent[b] = a;
-    sz[a] += sz[b];
-  }
-}
-// <----------DSU IMPLEMENTATION ENDS----------------->
-//<---------GRAPH ALOGORITHMS------------>
-void bfs(vi &bfsvector, int start){
-  for(int i = 0; i < smod; i++){
-    vis[i] = false;
-  }
-
-  qi q;
-  q.push(start);
-  bfsvector.pb(start);
-  vis[start] = true;
-  while(!q.empty()){
-    int a = q.front();
-    q.pop();
-    for(auto x: adj[a]){
-      if(!vis[x]){
-        q.push(x);
-        bfsvector.pb(x);
-        vis[x] = true;
-      }
-    }
-  }
-}
-
-void dfs(vi &dfsvector, int start){
-  vis[start] = true;
-  dfsvector.pb(start);
-  for(auto i: adj[start]){
-    if(!vis[i]){
-      dfs(dfsvector,i);
-    }
-  }
-
-}
-
-
-void kruskals(int &cost){
-  for(int i = 0; i<smod; i++){
-    make_set(i);
-  }
-  sort(edges.begin(),edges.end(),[&](vector<int> a, vector<int> b){
-    return a[2]<=b[2];
-  });
-  for(auto i:edges){
-    int u = i[0]; int v = i[1]; int w = i[2];
-    int x = find_set(u); int y = find_set(v);
-    if(x==y){
-      continue;
-    }else{ 
-      cout << u << " " << v << endl;
-      cost += w;
-      union_sets(u,v);
-    }
-  }
-}
-
-const int INF = 1e9;
-vi dist(smod,INF);
-void primsMST(int source,int &cost){
-  dist[source] = 0;
-  set<vector<int>> s;
-  s.insert({0,source});
-  while(!s.empty()){
-    auto x = *s.begin(); // x = vector
-    s.erase(x);
-    vis[x[1]] = true;
-    int u = x[1];
-    int v = parent[x[1]];
-    int w = x[0];
-    cout << u << " " << v << " " << w << endl;
-    cost += w;
-    for(auto it: prismGraph[x[1]]){
-      if(vis[it[0]]){
-        continue;
-      }
-      if(dist[it[0]] >it[1]){
-        s.erase({dist[it[0]],it[0]});
-        dist[it[0]] = it[1];
-        s.insert({dist[it[0]],it[0]});
-        parent[it[0]] = x[1];
-      }
-    }
-  }
-}
-
-void dijkstra(int source,int n){
-  dist[source] = 0;
-  set<vector<int>> s;
-  s.insert({0,source});
-  while(!s.empty()){
-    auto x = *s.begin();
-    s.erase(x);
-    for(auto it: prismGraph[x[1]]){
-      if(dist[it[0]] > dist[x[1]] + it[1]){
-        s.erase({dist[it[0]],it[0]});
-        dist[it[0]] = dist[x[1]] + it[1];
-        s.insert({dist[it[0]],it[0]});
-      }
-    }
-  }
-  for(int i = 1; i<=n; i++){
-    if(dist[i]<INF){
-      cout << dist[i] << " ";
-    }else{
-      cout<<-1 << " ";
-    }
-  }
-}
-
-void bellmanFord(int n, int source){
-  dist[source] = 0;
-  for(int i = 0; i<n-1; i++){
-    for(auto e: edges){
-      int u= e[0];
-      int v= e[1];
-      int w= e[2];
-      dist[v] = min(dist[v],w + dist[u]);
-    }
-  }
-
-  for(int i = 0; i<n; i++){
-    cout << dist[i] << " ";
-  }
-}
-// <--------- GRAPH ALOGORITHM ENDS------------------->
-vi v(1000001,-1);
-int combination(int n){
-  if(n<=0){
-    return 0;
-  }
-  if(n==1){
-    return 1;
-  }
-
-  if(v[n]!=-1){
-    return v[n];
-  }
-
-  v[n] = 1+ combination(n-1) + combination(n-2) + combination(n-3) + combination(n-4) + combination(n-5) + combination(n-6);
-  return v[n]; 
-
-}
 void solve()
 {
-    int n;
-    cin >> n;
-    cout << combination(n) << endl;
+  item x;
+  x.getData(4,5);
+  x.putData();
 }
 int main()
 {

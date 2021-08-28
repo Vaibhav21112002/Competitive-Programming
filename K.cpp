@@ -54,52 +54,6 @@ void init_code(){
     #endif
 }
 
-void bfs(vi &bfsvector, int start){
-  for(int i = 0; i < smod; i++){
-    vis[i] = false;
-  }
-
-  qi q;
-  q.push(start);
-  bfsvector.pb(start);
-  vis[start] = true;
-  while(!q.empty()){
-    int a = q.front();
-    q.pop();
-    for(auto x: adj[a]){
-      if(!vis[x]){
-        q.push(x);
-        bfsvector.pb(x);
-        vis[x] = true;
-      }
-    }
-  }
-}
-
-void dfs(vi &dfsvector, int start){
-  vis[start] = true;
-  dfsvector.pb(start);
-  for(auto i: adj[start]){
-    if(!vis[i]){
-      dfs(dfsvector,i);
-    }
-  }
-
-}
-
-void build(int node, int st, int end){
-  if(st==end){
-    tree[node] = artree[st];
-    return;
-  }
-
-  int mid = (st+end)/2;
-  build(2*node, st,mid);
-  build(2*node+1,mid+1,end);
-
-  tree[node] = tree[2*node] + tree[2*node+1];
-}
-
 struct Node{
 public:
   int data;
@@ -232,8 +186,8 @@ int treeDiamter(Node* root){
   int lh = treeHeight(root->left);
   int rh = treeHeight(root->right);
   int currDia = lh + rh + 1;
-  int ld = treeHeight(root->left);
-  int rd = treeHeight(root->right);
+  int ld = treeDiamter(root->left);
+  int rd = treeDiamter(root->right);
 
 
   return max(currDia,max(ld,rd));
