@@ -1,2 +1,1 @@
-Number: 5
-Cost: 4
+3
