@@ -27,16 +27,17 @@ using namespace std;
 #define pf push_front
 #define pob pop_back
 #define pof pop_front
-#define visort(v) sort(v.begin(),v.end())
+#define ff first
+#define ss second
+#define lb lower_bound
+#define ub upper_bound
+#define ins insert
+#define all(v) v.begin(),v.end()
 #define arrsort(a,n) sort(a,a+n)
 #define br cout<<"\n";
 #define mod 1000000007
 #define smod 100006
 #define pie 3.1415926536
-vi adj[smod];
-vvi prismGraph[smod];
-vvi edges;
-vector<bool> vis(smod,0);
 
 bool isLetter(char c) { return (c >= 'A' and c <= 'Z') or (c >= 'a' and c <= 'Z');}
 bool isUpperCase(char c) {return c >= 'A' and c <= 'Z';}
@@ -55,29 +56,9 @@ void init_code(){
   #endif
 }
 
-class item{
-  int cost;
-  int number;
-  public:
-    void getData(int a, int b);
-    void putData();
-};
-
-void item :: getData(int a, int b){
-  cost = a;
-  number = b;
-}
-
-void item :: putData(){
-  cout << "Number: " << number << endl;
-  cout << "Cost: " << cost << endl;
-}
-
 void solve()
 {
-  item x;
-  x.getData(4,5);
-  x.putData();
+    
 }
 int main()
 {

@@ -1,5 +1,8 @@
 #include <bits/stdc++.h>
-#include <chrono> 
+#include <chrono>
+//#include <ext/pb_ds/assoc_container.hpp>
+//#include <ext/pb_ds/tree_policy.hpp>
+//using namespace __gnu_pbds;
 using namespace std;
 using namespace chrono;
 
@@ -15,9 +18,12 @@ using namespace chrono;
 #define ub upper_bound
 #define ins insert
 #define read(x) for(auto &inps: x) cin>>inps
-#define all(v) v.rbegin(),v.rend()
+#define all(v) v.begin(),v.end()
 #define mod 1000000007
 #define smod 100006
+
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -55,54 +61,26 @@ void init_code(){
   #endif
 }
 
-bool isCons(string s){
-  for(int i = 0; i<s.size()-1; i++){
-    if(s[i]!=s[i+1]){
-      return false;
-    }
-  }
-  return true;
-}
-
-
-void shift(vector<int> &v, int l, int r){
-  for(int i = r; i>l; i--){
-    swap(v[i], v[i-1]);
-  }
-}
+// [11,33,100,51]
 
 void solve()
 {
-  int t; cin >> t;
-  for(int tt= 1; tt <= t; tt++){
-    int n; cin >> n;
-    vi v(n); read(v);
-    vector<vector<int>> ans;
-    debug(v);
-    for(int i = 0; i<n-1; i++){
-      int mx = mod;int mi = -1;
-      for(int j = i; j<n; j++){
-        if(v[j] <  mx){
-          mx = v[j];
-          mi = j; 
+    int t,n; cin >> t >> n;
+    //cout << 3 << endl;
+    for(int tt = 1; tt<=t; tt++){
+        for(int i = 1; i<n; i++){
+            cout << "M " << i << " " << n;
+            int x;
+            cin >> x;
+            if(x != 1) {
+                cout << "S " << 1 << " " << x;
+            }
         }
-      }
-
-      if(mi!=i){
-        ans.pb({i+1,mi+1,mi-i });
-        shift(v,i,mi);
-      }
-      debug(i,mi,v);
+        cout << "D" << endl;
     }
-    cout << ans.size() << endl;
-    for(auto i:ans){
-      cout << i[0] << " " << i[1] << " " << i[2] << endl;
-    }
-  }
 }
 int main()
 {
-  init_code();
   auto start = high_resolution_clock::now();
   ios_base::sync_with_stdio(false);
   cin.tie(0); cout.tie(0);
