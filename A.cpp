@@ -38,7 +38,7 @@ using namespace chrono;
 #define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
 
 const int mod = 1e9+7;
-const int smod = 1e5+1;
+const int smod = 2e5+1;
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -78,10 +78,28 @@ void init_code(){
 
 void solve()
 {
-    int t; cin >> t;
-    for(int tt = 1; tt <=t; tt++){
-        long long n; cin >> n;
-        cout << -(n-1) << " " << n << endl;
+    int n,x; cin >> n >> x;
+    vector<int> v(n); read(v);
+    multiset<int> m;
+    for(int i = 0; i<x; i++){
+        m.insert(v[i]);
+    }
+    if(x%2!=0){
+        cout << *next(m.begin(),x/2) << " ";
+    }else{
+        cout << min(*next(m.begin(),x/2),*next(m.begin(),(x/2)-1)) << " ";
+    }
+
+
+    for(int i = x; i<n; i++){
+        int a; cin >> a;
+        m.erase(m.find(v[i-x]));
+        m.insert(v[i]);
+        if(x%2!=0){
+        cout << *next(m.begin(),x/2) << " ";
+        }else{
+            cout << min(*next(m.begin(),x/2),*next(m.begin(),(x/2)-1)) << " ";
+        }
     }
 }
 

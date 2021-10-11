@@ -1,3 +1,8 @@
+/*
+* author : Vaibhav Gupta
+*/
+
+
 #include <bits/stdc++.h>
 #include <chrono> 
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -6,8 +11,11 @@
 using namespace std;
 using namespace chrono;
 
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
 #define ll long long int
 #define vi vector<int>
+#define vll vector<ll>
 #define pb push_back
 #define pf push_front
 #define pob pop_back
@@ -20,11 +28,17 @@ using namespace chrono;
 #define read(x) for(auto &inps: x) cin>>inps
 #define all(v) v.begin(),v.end()
 
+#define F_OR(i, a, b, s) for (int i=(a); (s)>0?i<(b):i>(b); i+=(s))
+#define F_OR1(e) F_OR(i, 0, e, 1)
+#define F_OR2(i, e) F_OR(i, 0, e, 1)
+#define F_OR3(i, b, e) F_OR(i, b, e, 1)
+#define F_OR4(i, b, e, s) F_OR(i, b, e, s)
+#define GET5(a, b, c, d, e, ...) e
+#define F_ORC(...) GET5(__VA_ARGS__, F_OR4, F_OR3, F_OR2, F_OR1)
+#define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
+
 const int mod = 1e9+7;
 const int smod = 1e5+1;
-
-//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
-
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -62,60 +76,41 @@ void init_code(){
   #endif
 }
 
-vector<vector<int>> adj[smod+1];
-vi dist(smod,mod);
-vi parent(smod,-1);
-
-//<---------GRAPH ALOGORITHMS------------>
-
-
-void dik(int start){
-    dist[start] = 0;
-    set<vector<int>> s;
-    s.insert({0,start});
-    while(!s.empty()){
-        auto x = *s.begin(); // {0,start}
-        s.erase(x);
-        for(auto i:adj[x[1]]){
-            if(dist[i[0]] > i[1]+dist[x[1]] ){
-                s.erase({dist[i[0]], i[0]});
-                dist[i[0]] = dist[x[1]] + i[1];
-                s.insert({dist[i[0]], i[0]});
-                parent[i[0]] = x[1];
-            }
+bool issame(string s, char c){
+    for(auto i:s){
+        if(i != c){
+            return false;
         }
     }
+    return true;
 }
-
-// <--------- GRAPH ALOGORITHM ENDS------------------->
 
 void solve()
 {
-    int n,m; cin >> n >> m;
-    for(int i = 0; i<m; i++){
-        int x,y; cin >> x >> y;
-        adj[x].pb({y,1});
-        adj[y].pb({x,1});
-    }
-
-    dik(1);
-    if(dist[n] == mod){
-        cout << "IMPOSSIBLE" << endl;
-        return;
-    }else{
-        cout << dist[n]+1 << endl;
-    }
-    int cr = n;
-    vi ans;
-    for(int i = 0; i<dist[n]+1; i++){
-        // cout << cr << " ";
-        ans.pb(cr);
-        assert(parent[cr]);
-        cr = parent[cr];
-    }
-    reverse(all(ans));
-    for(auto i:ans){
-        cout << i << " ";
+    int t; cin >> t;
+    for(int tt = 1; tt <=t; tt++){
+        int n; cin >> n;
+        char c; cin >> c;
+        string s; cin >> s;
+        if(issame(s,c)){
+            cout << 0 << endl;
+        }else{
+            int ans = 0;
+            for(int i=0;i<n;i++){
+                ans=i;
+                for(int j=i;j<=n;j+=i){
+                    if(s[j]!=c) ans=0;
+                }
+                if(ans){
+                    break;
+                }
+            }
+            if(ans > 1){
+                cout << 1 << "\n" << ans+1 << endl;
+            }else {
+                cout << 2 << "\n" << n-1 << " " << n << endl;
+            }
+        }
     }
 }
 

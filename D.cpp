@@ -78,12 +78,13 @@ void init_code(){
 
 void solve()
 {
-    
+	int n; cin >> n;
+	cout << n*n << endl;
 }
 
 int main()
 {
-    init_code();
+    //init_code();
     auto start = high_resolution_clock::now();
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);

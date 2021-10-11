@@ -1,3 +1,8 @@
+/*
+* author : Vaibhav Gupta
+*/
+
+
 #include <bits/stdc++.h>
 #include <chrono>
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -6,8 +11,11 @@
 using namespace std;
 using namespace chrono;
 
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
 #define ll long long int
 #define vi vector<int>
+#define vll vector<ll>
 #define pb push_back
 #define pf push_front
 #define pob pop_back
@@ -19,11 +27,18 @@ using namespace chrono;
 #define ins insert
 #define read(x) for(auto &inps: x) cin>>inps
 #define all(v) v.begin(),v.end()
-#define mod 1000000007
-#define smod 100006
 
-//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+#define F_OR(i, a, b, s) for (int i=(a); (s)>0?i<(b):i>(b); i+=(s))
+#define F_OR1(e) F_OR(i, 0, e, 1)
+#define F_OR2(i, e) F_OR(i, 0, e, 1)
+#define F_OR3(i, b, e) F_OR(i, b, e, 1)
+#define F_OR4(i, b, e, s) F_OR(i, b, e, s)
+#define GET5(a, b, c, d, e, ...) e
+#define F_ORC(...) GET5(__VA_ARGS__, F_OR4, F_OR3, F_OR2, F_OR1)
+#define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
 
+const int mod = 1e9+7;
+const int smod = 1e5+1;
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -61,34 +76,30 @@ void init_code(){
   #endif
 }
 
-// [11,33,100,51]
+long long n;
 
 void solve()
 {
-    int t,n; cin >> t >> n;
-    //cout << 3 << endl;
-    for(int tt = 1; tt<=t; tt++){
-        for(int i = 1; i<n; i++){
-            cout << "M " << i << " " << n;
-            int x;
-            cin >> x;
-            if(x != 1) {
-                cout << "S " << 1 << " " << x;
-            }
-        }
-        cout << "D" << endl;
+    map<int,int> m;
+    for(int i = 0; i<10; i++){
+        int a; cin >> a;
+        m[a]++;
     }
+
+    debug(m);
 }
+
 int main()
 {
-  auto start = high_resolution_clock::now();
-  ios_base::sync_with_stdio(false);
-  cin.tie(0); cout.tie(0);
-  solve();
-  auto stop = high_resolution_clock::now();
-  auto duration = duration_cast<microseconds>(stop - start);
-  float timeCount = duration.count();
-  timeCount /= 1000000;
-  debug("Time Taken",timeCount);
-  return 0;
+    init_code();
+    auto start = high_resolution_clock::now();
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+    solve();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    float timeCount = duration.count();
+    timeCount /= 1000000;
+    debug("Time Taken",timeCount);
+    return 0;
 }
