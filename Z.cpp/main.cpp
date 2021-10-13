@@ -1,10 +1,21 @@
+/*
+* author : Vaibhav Gupta
+*/
+
+
 #include <bits/stdc++.h>
-#include <chrono> 
+#include <chrono>
+//#include <ext/pb_ds/assoc_container.hpp>
+//#include <ext/pb_ds/tree_policy.hpp>
+//using namespace __gnu_pbds;
 using namespace std;
 using namespace chrono;
 
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
 #define ll long long int
 #define vi vector<int>
+#define vll vector<ll>
 #define pb push_back
 #define pf push_front
 #define pob pop_back
@@ -15,9 +26,19 @@ using namespace chrono;
 #define ub upper_bound
 #define ins insert
 #define read(x) for(auto &inps: x) cin>>inps
-#define all(v) v.rbegin(),v.rend()
-#define mod 1000000007
-#define smod 100006
+#define all(v) v.begin(),v.end()
+
+#define F_OR(i, a, b, s) for (int i=(a); (s)>0?i<(b):i>(b); i+=(s))
+#define F_OR1(e) F_OR(i, 0, e, 1)
+#define F_OR2(i, e) F_OR(i, 0, e, 1)
+#define F_OR3(i, b, e) F_OR(i, b, e, 1)
+#define F_OR4(i, b, e, s) F_OR(i, b, e, s)
+#define GET5(a, b, c, d, e, ...) e
+#define F_ORC(...) GET5(__VA_ARGS__, F_OR4, F_OR3, F_OR2, F_OR1)
+#define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
+
+const int mod = 1e9+7;
+const int smod = 1e5+1;
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -55,62 +76,30 @@ void init_code(){
   #endif
 }
 
-bool isCons(string s){
-  for(int i = 0; i<s.size()-1; i++){
-    if(s[i]!=s[i+1]){
-      return false;
-    }
-  }
-  return true;
-}
-
-
-void shift(vector<int> &v, int l, int r){
-  for(int i = r; i>l; i--){
-    swap(v[i], v[i-1]);
-  }
-}
+long long n;
 
 void solve()
 {
-  int t; cin >> t;
-  for(int tt= 1; tt <= t; tt++){
-    int n; cin >> n;
-    vi v(n); read(v);
-    vector<vector<int>> ans;
-    debug(v);
-    for(int i = 0; i<n-1; i++){
-      int mx = mod;int mi = -1;
-      for(int j = i; j<n; j++){
-        if(v[j] <  mx){
-          mx = v[j];
-          mi = j; 
-        }
-      }
+    map<int,int> m;
+    for(int i = 0; i<10; i++){
+        int a; cin >> a;
+        m[a]++;
+    }
 
-      if(mi!=i){
-        ans.pb({i+1,mi+1,mi-i });
-        shift(v,i,mi);
-      }
-      debug(i,mi,v);
-    }
-    cout << ans.size() << endl;
-    for(auto i:ans){
-      cout << i[0] << " " << i[1] << " " << i[2] << endl;
-    }
-  }
+    debug(m);
 }
+
 int main()
 {
-  init_code();
-  auto start = high_resolution_clock::now();
-  ios_base::sync_with_stdio(false);
-  cin.tie(0); cout.tie(0);
-  solve();
-  auto stop = high_resolution_clock::now();
-  auto duration = duration_cast<microseconds>(stop - start);
-  float timeCount = duration.count();
-  timeCount /= 1000000;
-  debug("Time Taken",timeCount);
-  return 0;
+    init_code();
+    auto start = high_resolution_clock::now();
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+    solve();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    float timeCount = duration.count();
+    timeCount /= 1000000;
+    debug("Time Taken",timeCount);
+    return 0;
 }

@@ -1,158 +1,130 @@
+/*
+* author : Vaibhav Gupta
+*/
+
+
 #include <bits/stdc++.h>
+#include <chrono> 
+//#include <ext/pb_ds/assoc_container.hpp>
+//#include <ext/pb_ds/tree_policy.hpp>
+//using namespace __gnu_pbds;
 using namespace std;
+using namespace chrono;
 
-#define For(i,a,n) for(int i = a; i < n; i++)
-#define case(n) while(n--)
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
 #define ll long long int
-#define read(a) for(int i = 0; i < n; i++) cin >> a[i];
-#define print(a) for(int i = 0; i < n; i++) cout << a[i] << " ";
+#define vi vector<int>
+#define vll vector<ll>
+#define pb push_back
+#define pf push_front
+#define pob pop_back
+#define pof pop_front
+#define ff first
+#define ss second
+#define lb lower_bound
+#define ub upper_bound
+#define ins insert
+#define read(x) for(auto &inps: x) cin>>inps
+#define all(v) v.begin(),v.end()
 
-typedef vector<int> vi;
-typedef vector<pair<int,int>> vpi;
-typedef pair<int,int> pi;
-typedef multiset<int> s;
-typedef multiset<int,greater<int>> sg;	 
+#define F_OR(i, a, b, s) for (int i=(a); (s)>0?i<(b):i>(b); i+=(s))
+#define F_OR1(e) F_OR(i, 0, e, 1)
+#define F_OR2(i, e) F_OR(i, 0, e, 1)
+#define F_OR3(i, b, e) F_OR(i, b, e, 1)
+#define F_OR4(i, b, e, s) F_OR(i, b, e, s)
+#define GET5(a, b, c, d, e, ...) e
+#define F_ORC(...) GET5(__VA_ARGS__, F_OR4, F_OR3, F_OR2, F_OR1)
+#define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
+
+const int mod = 1e9+7;
+const int smod = 1e5+1;
+
+void __print(int x) {cerr << x;}
+void __print(long x) {cerr << x;}
+void __print(long long x) {cerr << x;}
+void __print(unsigned x) {cerr << x;}
+void __print(unsigned long x) {cerr << x;}
+void __print(unsigned long long x) {cerr << x;}
+void __print(float x) {cerr << x;}
+void __print(double x) {cerr << x;}
+void __print(long double x) {cerr << x;}
+void __print(char x) {cerr << '\'' << x << '\'';}
+void __print(const char *x) {cerr << '\"' << x << '\"';}
+void __print(const string &x) {cerr << '\"' << x << '\"';}
+void __print(bool x) {cerr << (x ? "true" : "false");}
+template<typename T, typename V>
+void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ','; __print(x.second); cerr << '}';}
+template<typename T>
+void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";}
+void _print() {cerr << "]\n";}
+template <typename T, typename... V>
+void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+#ifndef ONLINE_JUDGE
+#define debug(x...) cerr << "[" << #x << "] = ["; _print(x)
+#else
+#define debug(x...)
+#endif
+
+bool isPowerOfTwo(ll n) {return!(n&&(n&(n-1)));}
+int setBits(ll n){ll ans = 0; while(n>0){n = (n&(n-1)); ans++; } return ans; }
 
 void init_code(){
-	#ifndef ONLINE_JUDGE
-	freopen("input.txt","r", stdin);
-	freopen("output.txt","w", stdout);
-	#endif
+  #ifndef ONLINE_JUDGE
+  freopen("input.txt","r", stdin);
+  freopen("output.txt","w", stdout);
+  #endif
 }
 
+bool issame(string s, char c){
+    for(auto i:s){
+        if(i != c){
+            return false;
+        }
+    }
+    return true;
+}
 
 void solve()
 {
-	int r,c;
-	cin >> r >> c;
-	int a[r][c];
-	for (int i = 0; i < r; i++){
-		for (int j = 0; j < c; j++){
-			cin >> a[i][j];
-		}
-	}
-	int count = 0;
-	for (int asd = 0; asd < r*c; asd++){
-		int mx = -1;
-		// pair<int,int> p= {0,0};
-		int x ,y;
-		for (int i = 0; i < r; i++){
-			for (int j = 0; j < c; j++){
-				if (a[i][j] >= mx){
-					x = i;
-					y = j;
-					mx = a[i][j];
-				}
-			}	
-		}
-		// int x = p.first, y = p.second;
-		if (x == 0 and y == 0){
-			if (a[x][y] >= a[x][y+1] and a[x][y+1] != -1){
-				count += a[x][y]-a[x][y+1] - 1;
-			}
-			if (a[x][y] >= a[x+1][y] and a[x+1][y] != -1){
-				count += a[x][y]-a[x+1][y] - 1;
-			}
-
-		}
-		if (x == 0 and y == c-1){
-			if (a[x][y] >= a[x][y-1] and a[x][y-1] != -1){
-				count += a[x][y]-a[x][y-1] - 1;
-			}
-			if (a[x][y] >= a[x+1][y] and a[x+1][y] != -1){
-				count += a[x][y]-a[x+1][y] - 1;
-			}
-		}
-		if (x == r-1 and y == 0){
-			if (a[x][y] >= a[x][y+1] and a[x][y+1] != -1){
-				count += a[x][y]-a[x][y+1] - 1;
-			}
-			if (a[x][y] >= a[x-1][y] and a[x-1][y] != -1){
-				count += a[x][y]-a[x-1][y] - 1;
-			}
-		}
-		if (x == r-1 and y == c-1){
-			if (a[x][y] >= a[x][y-1] and a[x][y-1] != -1){
-				count += a[x][y]-a[x][y-1] - 1;
-			}
-			if (a[x][y] >= a[x-1][y] and a[x-1][y] != -1){
-				count += a[x][y]-a[x-1][y] - 1;
-			}
-		}
-
-		if (x == 0 and y > 0 and y < c-1){
-			if (a[x][y] > a[x+1][y] and a[x+1][y] != -1){
-				count+= a[x][y] - a[x+1][y];
-			}
-			if (a[x][y] > a[x][y+1] and a[x][y+1] != -1){
-				count+= a[x][y] - a[x][y+1];
-			}
-			if (a[x][y] > a[x][y-1] and a[x][y-1] != -1){
-				count+= a[x][y] - a[x][y-1];
-			}
-		}
-		if (x == r-1 and y > 0 and y < c-1){
-			if (a[x][y] > a[x-1][y] and a[x-1][y] != -1){
-				count+= a[x][y] - a[x-1][y];
-			}
-			if (a[x][y] > a[x][y+1] and a[x][y+1] != -1){
-				count+= a[x][y] - a[x][y+1];
-			}
-			if (a[x][y] > a[x][y-1] and a[x][y-1] != -1){
-				count+= a[x][y] - a[x][y-1];
-			}
-		}
-		if (y == 0 and x > 0 and x < r-1){
-			if (a[x][y] > a[x+1][y] and a[x+1][y] != -1){
-				count+= a[x][y] - a[x+1][y];
-			}
-			if (a[x][y] > a[x-1][y] and a[x-1][y] != -1){
-				count+= a[x][y] - a[x-1][y];
-			}
-			if (a[x][y] > a[x][y+1] and a[x][y+1] != -1){
-				count+= a[x][y] - a[x][y+1];
-			}
-		}
-		if (y == 0 and x > 0 and x < r-1){
-			if (a[x][y] > a[x+1][y] and a[x+1][y] != -1){
-				count+= a[x][y] - a[x+1][y];
-			}
-			if (a[x][y] > a[x-1][y] and a[x-1][y] != -1){
-				count+= a[x][y] - a[x-1][y];
-			}
-			if (a[x][y] > a[x][y-1] and a[x][y-1] != -1){
-				count+= a[x][y] - a[x][y-1];
-			}
-		}
-
-		if(x > 0 and y > 0 and x < r-1 and y < c-1){
-			if (a[x][y] > a[x+1][y] and a[x+1][y] != -1){
-				count+= a[x][y] - a[x+1][y];
-			}
-			if (a[x][y] > a[x-1][y] and a[x-1][y] != -1){
-				count+= a[x][y] - a[x-1][y];
-			}
-			if (a[x][y] > a[x][y-1] and a[x][y-1] != -1){
-				count+= a[x][y] - a[x][y-1];
-			}
-			if (a[x][y] > a[x][y+1] and a[x][y+1] != -1){
-				count+= a[x][y] - a[x][y+1];
-			}
-		}
-		a[x][y] = -1;
-	}
-	cout << count << endl;
+    int t; cin >> t;
+    for(int tt = 1; tt <=t; tt++){
+        int n; cin >> n;
+        char c; cin >> c;
+        string s; cin >> s;
+        if(issame(s,c)){
+            cout << 0 << endl;
+        }else{
+            int ans = 0;
+            for(int i=0;i<n;i++){
+                ans=i;
+                for(int j=i;j<=n;j+=i){
+                    if(s[j]!=c) ans=0;
+                }
+                if(ans){
+                    break;
+                }
+            }
+            if(ans > 1){
+                cout << 1 << "\n" << ans+1 << endl;
+            }else {
+                cout << 2 << "\n" << n-1 << " " << n << endl;
+            }
+        }
+    }
 }
+
 int main()
 {
-	init_code();
-	ios_base::sync_with_stdio(false);
-	cin.tie(0); cout.tie(0);
-	int t;
-	cin >> t;
-	for (int hg = 1; hg <= t; ++hg){
-		cout << "Case #" << hg << ": ";
-		solve();
-	}
-	return 0;
+    init_code();
+    auto start = high_resolution_clock::now();
+    ios_base::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+    solve();
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    float timeCount = duration.count();
+    timeCount /= 1000000;
+    debug("Time Taken",timeCount);
+    return 0;
 }
