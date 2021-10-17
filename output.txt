@@ -1,5 +1,7 @@
-<<<<<<< HEAD
-12
-=======
-5
->>>>>>> 257d250902de892e7de0134012c62c2548194887
+Case #1: POSSIBLE
+0 0
+0 6
+1 5
+1 0
+Case #2: POSSIBLE
+IMPOSSIBLE

@@ -2,7 +2,6 @@
 * author : Vaibhav Gupta
 */
 
-
 #include <bits/stdc++.h>
 #include <chrono> 
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -10,8 +9,6 @@
 //using namespace __gnu_pbds;
 using namespace std;
 using namespace chrono;
-
-//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
 
 #define ll long long int
 #define vi vector<int>
@@ -39,6 +36,9 @@ using namespace chrono;
 
 const int mod = 1e9+7;
 const int smod = 1e5+1;
+
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -70,47 +70,68 @@ bool isPowerOfTwo(ll n) {return!(n&&(n&(n-1)));}
 int setBits(ll n){ll ans = 0; while(n>0){n = (n&(n-1)); ans++; } return ans; }
 
 void init_code(){
-  #ifndef ONLINE_JUDGE
-  freopen("input.txt","r", stdin);
-  freopen("output.txt","w", stdout);
-  #endif
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt","r", stdin);
+    freopen("output.txt","w", stdout);
+    #endif
 }
-
-bool issame(string s, char c){
-    for(auto i:s){
-        if(i != c){
-            return false;
-        }
-    }
-    return true;
-}
-
 void solve()
 {
-    int t; cin >> t;
-    for(int tt = 1; tt <=t; tt++){
-        int n; cin >> n;
-        char c; cin >> c;
-        string s; cin >> s;
-        if(issame(s,c)){
-            cout << 0 << endl;
+    int n; cin >> n;
+    int a; cin >> a;
+    if(a%2 == 0){
+        a = a/2;
+    }
+    if(n == 3){
+        cout << "POSSIBLE" << endl;
+        cout << 0 << " " << 0 << endl;
+        cout << 1 << " " << 0 << endl;
+        cout << 0 << " " << a << endl;
+    }else if (n == 4){
+        if(a%2!=0){
+            cout << "POSSIBLE" << endl;
+            cout << 0 << " " << 0 << endl;
+            cout << 0 << " " << (a/2)+1 << endl;
+            cout << 1 << " " << a/2 << endl;
+            cout << 1 << " " << 0 << endl;
         }else{
-            int ans = 0;
-            for(int i=0;i<n;i++){
-                ans=i;
-                for(int j=i;j<=n;j+=i){
-                    if(s[j]!=c) ans=0;
+            cout << "POSSIBLE" << endl;
+            cout << 0 << " " << 0 << endl;
+            cout << 0 << " " << a << endl;
+            cout << 1 << " " << a << endl;
+            cout << 1 << " " << 0 << endl;
+        }
+        
+    }else if(n == 5){
+        if(a<3){
+            cout << "IMPOSSIBLE";
+        }else{
+            cout << "POSSIBLE" << endl;
+            if(a%2 == 0){
+                cout << 0 << " " << 0 << endl;
+                cout << 0 << " " << (a-2)/2 << endl;
+                cout << 1 << " " << ((a-2)/2) + 2 << endl;
+                cout << 2 << " " << (a-2)/2 << endl;
+                cout << 2 << " " << 0 << endl;
+            }else{
+                if((a/2)%2==0){
+                    cout << 0 << " " << 0 << endl;
+                    cout << 0 << " " << (a)/4 << endl;
+                    cout << 1 << " " << ((a)/4) + 1 << endl;
+                    cout << 2 << " " << (a)/4 << endl;
+                    cout << 2 << " " << 0 << endl;
+                }else{
+                    // cout << 0 << " " << 0 << endl;
+                    // cout << 0 << " " << (a-3)/4 << endl;
+                    // cout << 1 << " " << ((a-3)/4) + 3 << endl;
+                    // cout << 2 << " " << (a-3)/4 << endl;
+                    // cout << 2 << " " << 0 << endl;
+                    cout << "IMPOSSIBLE" << endl;
                 }
-                if(ans){
-                    break;
-                }
-            }
-            if(ans > 1){
-                cout << 1 << "\n" << ans+1 << endl;
-            }else {
-                cout << 2 << "\n" << n-1 << " " << n << endl;
+                
             }
         }
+        
     }
 }
 
@@ -120,7 +141,11 @@ int main()
     auto start = high_resolution_clock::now();
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
-    solve();
+    int t; cin >> t;
+    for(int tt = 1; tt <= t; tt++){
+        cout << "Case #" << tt << ": ";
+        solve();
+    }
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     float timeCount = duration.count();

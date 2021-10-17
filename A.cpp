@@ -2,7 +2,6 @@
 * author : Vaibhav Gupta
 */
 
-
 #include <bits/stdc++.h>
 #include <chrono> 
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -10,8 +9,6 @@
 //using namespace __gnu_pbds;
 using namespace std;
 using namespace chrono;
-
-//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
 
 #define ll long long int
 #define vi vector<int>
@@ -38,7 +35,10 @@ using namespace chrono;
 #define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
 
 const int mod = 1e9+7;
-const int smod = 2e5+1;
+const int smod = 1e5+1;
+
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -70,37 +70,39 @@ bool isPowerOfTwo(ll n) {return!(n&&(n&(n-1)));}
 int setBits(ll n){ll ans = 0; while(n>0){n = (n&(n-1)); ans++; } return ans; }
 
 void init_code(){
-  #ifndef ONLINE_JUDGE
-  freopen("input.txt","r", stdin);
-  freopen("output.txt","w", stdout);
-  #endif
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt","r", stdin);
+    freopen("output.txt","w", stdout);
+    #endif
 }
 
 void solve()
 {
-    int n,x; cin >> n >> x;
-    vector<int> v(n); read(v);
-    multiset<int> m;
-    for(int i = 0; i<x; i++){
-        m.insert(v[i]);
-    }
-    if(x%2!=0){
-        cout << *next(m.begin(),x/2) << " ";
-    }else{
-        cout << min(*next(m.begin(),x/2),*next(m.begin(),(x/2)-1)) << " ";
+    ll n,d,c,m; cin >> n >> d >> c >> m;
+    string s; cin >> s;
+    ll dog= 0, cat = 0;
+    for(auto i:s){
+        if(i == 'C')cat++;
+        else dog++;
     }
 
-
-    for(int i = x; i<n; i++){
-        int a; cin >> a;
-        m.erase(m.find(v[i-x]));
-        m.insert(v[i]);
-        if(x%2!=0){
-        cout << *next(m.begin(),x/2) << " ";
+    ll ans = 0;
+    for(auto i:s){
+        if(i == 'C'){
+            if(c > 0) c--;
+            else break;
         }else{
-            cout << min(*next(m.begin(),x/2),*next(m.begin(),(x/2)-1)) << " ";
+            if(d > 0){
+                d--;
+                ans++;
+                c+=m;
+            }else{
+                break;
+            }
         }
     }
+
+    cout << (ans == dog?"YES":"NO") << endl;
 }
 
 int main()
@@ -109,7 +111,11 @@ int main()
     auto start = high_resolution_clock::now();
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
-    solve();
+    int t; cin >> t;
+    for(int tt = 1; tt <= t; tt++){
+        cout << "Case #" << tt << ": ";
+        solve();
+    }
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     float timeCount = duration.count();

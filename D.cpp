@@ -2,10 +2,6 @@
 * author : Vaibhav Gupta
 */
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 257d250902de892e7de0134012c62c2548194887
 #include <bits/stdc++.h>
 #include <chrono> 
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -13,18 +9,10 @@
 //using namespace __gnu_pbds;
 using namespace std;
 using namespace chrono;
-<<<<<<< HEAD
-
-#define ll long long int
-#define vi vector<int>
-=======
-
-//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
 
 #define ll long long int
 #define vi vector<int>
 #define vll vector<ll>
->>>>>>> 257d250902de892e7de0134012c62c2548194887
 #define pb push_back
 #define pf push_front
 #define pob pop_back
@@ -37,15 +25,7 @@ using namespace chrono;
 #define read(x) for(auto &inps: x) cin>>inps
 #define all(v) v.begin(),v.end()
 
-<<<<<<< HEAD
-const int mod = 1e9+7;
-const int smod = 1e5+1;
-
-//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
-
-
-=======
-#define F_OR(i, a, b, s) for (int i=(a); (s)>0?i<(b):i>(b); i+=(s))
+#define F_OR(i, a, b, s) for (ll i=(a); (s)>0?i<(b):i>(b); i+=(s))
 #define F_OR1(e) F_OR(i, 0, e, 1)
 #define F_OR2(i, e) F_OR(i, 0, e, 1)
 #define F_OR3(i, b, e) F_OR(i, b, e, 1)
@@ -57,7 +37,9 @@ const int smod = 1e5+1;
 const int mod = 1e9+7;
 const int smod = 1e5+1;
 
->>>>>>> 257d250902de892e7de0134012c62c2548194887
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
+
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
 void __print(long long x) {cerr << x;}
@@ -88,48 +70,64 @@ bool isPowerOfTwo(ll n) {return!(n&&(n&(n-1)));}
 int setBits(ll n){ll ans = 0; while(n>0){n = (n&(n-1)); ans++; } return ans; }
 
 void init_code(){
-<<<<<<< HEAD
     #ifndef ONLINE_JUDGE
     freopen("input.txt","r", stdin);
     freopen("output.txt","w", stdout);
     #endif
-=======
-  #ifndef ONLINE_JUDGE
-  freopen("input.txt","r", stdin);
-  freopen("output.txt","w", stdout);
-  #endif
->>>>>>> 257d250902de892e7de0134012c62c2548194887
 }
-
+ll dp[5001][5001];
 void solve()
 {
-<<<<<<< HEAD
+    ll n,k; cin >> n >> k;
+    vll v(n); read(v);
     
-=======
-	int n; cin >> n;
-	cout << n*n << endl;
->>>>>>> 257d250902de892e7de0134012c62c2548194887
+    memset(dp,0,sizeof(dp));
+
+    for(ll i = 0;i<n; i++){
+        ll s = 0;
+        for(ll j = i; j<n; j++){
+            s += v[j];
+            dp[i][j] = s;
+        }
+    }
+    ll ans = INT_MAX;
+    FOR(i,0,n){
+        FOR(j,0,n){
+            FOR(kk,0,n){
+                FOR(l,0,n){
+                    if(i < kk and j < l and j < kk and i <l and j >= i and l >= kk){
+                        if(dp[i][j] == k){
+                            ans = min(ans, j-i+1);
+                        }
+                        if(dp[kk][l] == k){
+                            ans = min(ans, l-kk+1);
+                        }
+                        if(dp[i][j] + dp[kk][l] == k ){
+                            ans = min(ans,j-i+1 + l - kk + 1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    cout << (ans==INT_MAX?-1:ans) << endl;
 }
 
 int main()
 {
-<<<<<<< HEAD
     init_code();
-=======
-    //init_code();
->>>>>>> 257d250902de892e7de0134012c62c2548194887
     auto start = high_resolution_clock::now();
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
-    solve();
+    int t; cin >> t;
+    for(int tt = 1; tt <= t; tt++){
+        cout << "Case #" << tt << ": ";
+        solve();
+    }
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     float timeCount = duration.count();
     timeCount /= 1000000;
     debug("Time Taken",timeCount);
     return 0;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 257d250902de892e7de0134012c62c2548194887

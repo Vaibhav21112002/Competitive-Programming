@@ -34,7 +34,6 @@ using namespace chrono;
 #define F_ORC(...) GET5(__VA_ARGS__, F_OR4, F_OR3, F_OR2, F_OR1)
 #define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
 
-
 const int mod = 1e9+7;
 const int smod = 1e5+1;
 

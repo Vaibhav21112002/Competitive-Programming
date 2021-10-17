@@ -2,7 +2,6 @@
 * author : Vaibhav Gupta
 */
 
-
 #include <bits/stdc++.h>
 #include <chrono> 
 //#include <ext/pb_ds/assoc_container.hpp>
@@ -10,8 +9,6 @@
 //using namespace __gnu_pbds;
 using namespace std;
 using namespace chrono;
-
-//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
 
 #define ll long long int
 #define vi vector<int>
@@ -39,6 +36,9 @@ using namespace chrono;
 
 const int mod = 1e9+7;
 const int smod = 1e5+1;
+
+//template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
+
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -70,81 +70,29 @@ bool isPowerOfTwo(ll n) {return!(n&&(n&(n-1)));}
 int setBits(ll n){ll ans = 0; while(n>0){n = (n&(n-1)); ans++; } return ans; }
 
 void init_code(){
-  #ifndef ONLINE_JUDGE
-  freopen("input.txt","r", stdin);
-  freopen("output.txt","w", stdout);
-  #endif
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt","r", stdin);
+    freopen("output.txt","w", stdout);
+    #endif
 }
-
-vector<vll> edges;
-
-// <----------DSU IMPLEMENTATION----------------->
-vector<ll> parent(smod);
-vector<ll> sz(smod);
-
-void make_set(ll n){
-  parent[n]= n;
-  sz[n] = 1;
-}
-
-ll find_set(ll a){
-  if(a == parent[a]){
-    return a;
-  }
-
-  return parent[a] = find_set(parent[a]);
-}
-
-void union_sets(ll a,ll b){
-  a = find_set(a);
-  b = find_set(b);
-  if(a!=b){
-    if(sz[a]<sz[b]) swap(a,b);
-    parent[b] = a;
-    sz[a] += sz[b];
-  }
-}
-// <----------DSU IMPLEMENTATION ENDS----------------->
-vector<vll> edd;
-//<---------GRAPH ALOGORITHMS------------>
-void kruskals(ll &cost){
-  for(ll i = 0; i<smod; i++){
-    make_set(i);
-  }
-  sort(edges.begin(),edges.end(),[&](vector<ll> a, vector<ll> b){
-    return a[2]<=b[2];
-  });
-  for(auto i:edges){
-    ll u = i[0]; ll v = i[1]; ll w = i[2];
-    ll x = find_set(u); ll y = find_set(v);
-    if(x==y){
-      continue;
-    }else{ 
-      // cout << u << " " << v << endl;
-      edd.push_back({u,v});
-      cost += w;
-      union_sets(u,v);
-    }
-  }
-}
-
-// <--------- GRAPH ALOGORITHM ENDS------------------->
 
 void solve()
 {
-    ll n,m; cin >> n >> m;
-    for(ll i = 0; i<m; i++){
-        ll u,v,w; cin >> u >> v >> w;
-        edges.pb({u,v,w});
+    ll n; cin >> n;
+    vector<ll> x,y;
+    for(ll i = 0; i<n; i++){
+        ll a,b,c,d; cin >> a >> b >> c >> d;
+        x.pb(a);
+        x.pb(c);
+        y.pb(b);
+        y.pb(d);
     }
-
-    ll cost = 0;
-    kruskals(cost);
-    if(edd.size()!=n-1){
-        cout << "IMPOSSIBLE" << endl;
-    }else
-    cout << cost << endl;
-}
+    sort(all(x));
+    sort(all(y));
+    n = 2*n;
+    debug(x,y,n/2);
+    cout << x[(n/2)-1] << " " << y[(n/2)-1] << endl;
+}   
 
 int main()
 {
@@ -152,7 +100,11 @@ int main()
     auto start = high_resolution_clock::now();
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
-    solve();
+    int t; cin >> t;
+    for(int tt = 1; tt <= t; tt++){
+        cout << "Case #" << tt << ": ";
+        solve();
+    }
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     float timeCount = duration.count();
