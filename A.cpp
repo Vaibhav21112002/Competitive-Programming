@@ -4,13 +4,13 @@
 
 #include <bits/stdc++.h>
 #include <chrono> 
+using namespace std;
+using namespace chrono;
 //#include <ext/pb_ds/assoc_container.hpp>
 //#include <ext/pb_ds/tree_policy.hpp>
 //using namespace __gnu_pbds;
-using namespace std;
-using namespace chrono;
 
-#define ll long long int
+#define ll long long
 #define vi vector<int>
 #define vll vector<ll>
 #define pb push_back
@@ -24,17 +24,10 @@ using namespace chrono;
 #define ins insert
 #define read(x) for(auto &inps: x) cin>>inps
 #define all(v) v.begin(),v.end()
-
-#define F_OR(i, a, b, s) for (int i=(a); (s)>0?i<(b):i>(b); i+=(s))
-#define F_OR1(e) F_OR(i, 0, e, 1)
-#define F_OR2(i, e) F_OR(i, 0, e, 1)
-#define F_OR3(i, b, e) F_OR(i, b, e, 1)
-#define F_OR4(i, b, e, s) F_OR(i, b, e, s)
-#define GET5(a, b, c, d, e, ...) e
-#define F_ORC(...) GET5(__VA_ARGS__, F_OR4, F_OR3, F_OR2, F_OR1)
-#define FOR(...) F_ORC(__VA_ARGS__)(__VA_ARGS__)
+#define endl "\n"
 
 const int mod = 1e9+7;
+const int mod2 = 998244353;
 const int smod = 1e5+1;
 
 //template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag ,  tree_order_statistics_node_update >;
@@ -66,43 +59,45 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 #define debug(x...)
 #endif
 
-bool isPowerOfTwo(ll n) {return!(n&&(n&(n-1)));}
-int setBits(ll n){ll ans = 0; while(n>0){n = (n&(n-1)); ans++; } return ans; }
 
 void init_code(){
-    #ifndef ONLINE_JUDGE
-    freopen("input.txt","r", stdin);
-    freopen("output.txt","w", stdout);
-    #endif
+  #ifndef ONLINE_JUDGE
+  freopen("input.txt","r", stdin);
+  freopen("output.txt","w", stdout);
+  #endif
 }
+
 
 void solve()
 {
-    ll n,d,c,m; cin >> n >> d >> c >> m;
-    string s; cin >> s;
-    ll dog= 0, cat = 0;
-    for(auto i:s){
-        if(i == 'C')cat++;
-        else dog++;
-    }
-
-    ll ans = 0;
-    for(auto i:s){
-        if(i == 'C'){
-            if(c > 0) c--;
-            else break;
-        }else{
-            if(d > 0){
-                d--;
-                ans++;
-                c+=m;
-            }else{
-                break;
-            }
+    long long n,q; cin >> n >> q;
+    vector<string> v = {"abc","acb","bac","bca","cab","cba"};
+    string st; cin >> st;
+    vector<vector<long long>> pref;
+    for(auto i:v){
+        string t;
+        for(long long j = 0; j<=n/3; j++){
+            t += i;
         }
+        vector<long long> pr(1);
+        long long s = 0;
+        for(long long i = 0; i<n; i++){
+            if(st[i] != t[i]){
+                ++s;
+            }
+            pr.pb(s);
+        }
+        pref.pb(pr);
     }
-
-    cout << (ans == dog?"YES":"NO") << endl;
+    while(q--){
+        long long u,v; cin >> u >> v;
+        long long ans = INT_MAX;
+        for(auto i:pref){
+            ans = min(ans,i[v]-i[u-1]);
+        }
+        cout << ans << endl;
+    }
+    debug(pref);
 }
 
 int main()
@@ -111,15 +106,10 @@ int main()
     auto start = high_resolution_clock::now();
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
-    int t; cin >> t;
-    for(int tt = 1; tt <= t; tt++){
-        cout << "Case #" << tt << ": ";
-        solve();
-    }
+    solve();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     float timeCount = duration.count();
     timeCount /= 1000000;
     debug("Time Taken",timeCount);
-    return 0;
 }

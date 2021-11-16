@@ -10,7 +10,7 @@
 using namespace std;
 using namespace chrono;
 
-#define ll long long int
+#define ll long long
 #define vi vector<int>
 #define vll vector<ll>
 #define pb push_back
@@ -25,7 +25,7 @@ using namespace chrono;
 #define read(x) for(auto &inps: x) cin>>inps
 #define all(v) v.begin(),v.end()
 
-#define F_OR(i, a, b, s) for (ll i=(a); (s)>0?i<(b):i>(b); i+=(s))
+#define F_OR(i, a, b, s) for (int i=(a); (s)>0?i<(b):i>(b); i+=(s))
 #define F_OR1(e) F_OR(i, 0, e, 1)
 #define F_OR2(i, e) F_OR(i, 0, e, 1)
 #define F_OR3(i, b, e) F_OR(i, b, e, 1)
@@ -75,42 +75,10 @@ void init_code(){
     freopen("output.txt","w", stdout);
     #endif
 }
-ll dp[5001][5001];
+
 void solve()
 {
-    ll n,k; cin >> n >> k;
-    vll v(n); read(v);
     
-    memset(dp,0,sizeof(dp));
-
-    for(ll i = 0;i<n; i++){
-        ll s = 0;
-        for(ll j = i; j<n; j++){
-            s += v[j];
-            dp[i][j] = s;
-        }
-    }
-    ll ans = INT_MAX;
-    FOR(i,0,n){
-        FOR(j,0,n){
-            FOR(kk,0,n){
-                FOR(l,0,n){
-                    if(i < kk and j < l and j < kk and i <l and j >= i and l >= kk){
-                        if(dp[i][j] == k){
-                            ans = min(ans, j-i+1);
-                        }
-                        if(dp[kk][l] == k){
-                            ans = min(ans, l-kk+1);
-                        }
-                        if(dp[i][j] + dp[kk][l] == k ){
-                            ans = min(ans,j-i+1 + l - kk + 1);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    cout << (ans==INT_MAX?-1:ans) << endl;
 }
 
 int main()

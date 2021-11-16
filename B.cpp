@@ -10,7 +10,7 @@
 using namespace std;
 using namespace chrono;
 
-#define ll long long int
+#define ll long long
 #define vi vector<int>
 #define vll vector<ll>
 #define pb push_back
@@ -78,21 +78,32 @@ void init_code(){
 
 void solve()
 {
-    ll n; cin >> n;
-    vector<ll> x,y;
-    for(ll i = 0; i<n; i++){
-        ll a,b,c,d; cin >> a >> b >> c >> d;
-        x.pb(a);
-        x.pb(c);
-        y.pb(b);
-        y.pb(d);
+    int n; cin >> n;
+    string s; cin >> s;
+    string t;
+    n = s.size();
+    char c = s[0];
+    t += c;
+    for(auto i:s){
+        if(i !=c){
+            t += i;
+            c = i;
+        }
     }
-    sort(all(x));
-    sort(all(y));
-    n = 2*n;
-    debug(x,y,n/2);
-    cout << x[(n/2)-1] << " " << y[(n/2)-1] << endl;
-}   
+    int ans = 0;
+    for(int i = 0; i<t.size(); i++){
+        if((i == 0 or i == t.size()-1) and t[i] == 'G'){
+            continue;
+        }else{
+            if(t[i] == 'B' or t[i] == 'Y' ){
+                ans ++;
+            }else if(t[i] == 'G' and t[i-1] == t[i+1]){
+                ans++;
+            }
+        }
+    }
+    cout << ans << endl;
+}
 
 int main()
 {
